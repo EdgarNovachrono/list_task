@@ -95,7 +95,7 @@ const Taches = () => {
             .doc(editingTask.id)
             .update({
               ...formData,
-              dueDate: firestore.Timestamp.fromDate(new Date(formData.dueDate))
+              dueDate: firestore.Timestamp.fromDate(new Date(formData.dueDate)),
             });
         } else {
           // Création
