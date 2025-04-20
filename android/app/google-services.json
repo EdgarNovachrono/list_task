@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "648081502609",
+    "project_id": "application-gestion-taches",
+    "storage_bucket": "application-gestion-taches.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648081502609:android:1883582f2a73d2b0dc6a30",
+        "android_client_info": {
+          "package_name": "com.list_tashk_3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfTVolzhLWbijg_FOznXoI44SGSWaaAL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
