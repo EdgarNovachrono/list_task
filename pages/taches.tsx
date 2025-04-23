@@ -76,7 +76,7 @@ const Taches = () => {
                showLateTaskNotification(task.title)
           }
         }); 
-      }, 500000);
+      }, 300000);
   
       return () => clearInterval(interval);
     }, [tasks]);
