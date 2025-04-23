@@ -3,7 +3,7 @@ import { View, Text ,Button, FlatList, TouchableOpacity, Image,TextInput, Modal,
 import React, { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
-import messaging from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
 import Toast from 'react-native-toast-message';
 
 interface Task {
@@ -14,32 +14,14 @@ interface Task {
   dueDate: Date;
    
   }
-  //notification
-  async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  }
-  const getToken=async()=>{
-    const token=await messaging().getToken();
-    console.log("token=  ",token)
-  }
+ 
 const Taches = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [formData, setFormData] = useState({ title: '', description: '', photo: '', dueDate: '' });
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [editingTask, setEditingTask] = useState<Task | null>(null);
-   useEffect(() =>{
-    requestUserPermission();
-    getToken();
-   })
-   
+  
    
     useEffect(() => {
         const subscriber = firestore()
@@ -62,15 +44,39 @@ const Taches = () => {
   
       return () => subscriber();
     }, []);
+    //permission notification
+    useEffect(() => {
+      async function displaynotification() {
+        await notifee.requestPermission();
+        await notifee.createChannel({
+          id: 'retard-taches',
+          name: 'Notifications de retard',
+        });
+         
+      }
+      displaynotification();
+    },[])
+    // fonction notification
+    const showLateTaskNotification = async (taskTitle: string) => {
+      await notifee.displayNotification({
+        title: 'Tâche en retard',
+        body: `La tâche "${taskTitle}" est en retard.`,
+        android: {
+          channelId: 'retard-taches',
+          smallIcon: 'ic_launcher', 
+        },
+      });
+    };
        //alert
     useEffect(() => {
       const interval = setInterval(() => {
         tasks.forEach(task => {
           if (new Date() > task.dueDate) {
-            Alert.alert('Tâche en retard', `La tâche "${task.title}" est en retard !`);
+           // Alert.alert('Tâche en retard', `La tâche "${task.title}" est en retard !`);
+               showLateTaskNotification(task.title)
           }
         }); 
-      }, 50000);
+      }, 500000);
   
       return () => clearInterval(interval);
     }, [tasks]);
@@ -155,7 +161,7 @@ const Taches = () => {
               }}
               onPress={() => setSelectedTask(item)}
             >
-              <Text style={{ fontSize: 18 }}>{item.title}</Text>
+              <Text style={{ fontSize: 18 }}>Titre:{item.title}</Text>
               <Text style={{ color: 'gray' }}>
                 Échéance: {item.dueDate.toLocaleDateString()}
               </Text>
