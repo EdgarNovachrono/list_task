@@ -97,12 +97,7 @@ export default function Login() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            onPress={() => {
-              
-            }}>
-            <Text style={styles.formLink}>mot de passe oublie?</Text>
-          </TouchableOpacity>
+          
         </View>
       </View>
 

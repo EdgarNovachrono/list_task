@@ -67,7 +67,7 @@ const Taches = () => {
         },
       });
     };
-       //alert
+       //notification
     useEffect(() => {
       const interval = setInterval(() => {
         tasks.forEach(task => {
